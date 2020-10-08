@@ -1,0 +1,45 @@
+while (Mouse.IsKeyDown(Keys.LButton) && Mouse.IsKeyDown(Keys.RButton))
+								for (var currentShotIndex = 0; currentShotIndex < Weapons.CurrentWeapon.RecoilTable.Length; currentShotIndex++)
+								{
+									if (!Mouse.IsKeyDown(Keys.LButton)) break;
+									if (Weapons.CurrentWeapon.SmoothValue > 1 && Weapons.CurrentWeapon.ShouldSmooth)
+									{
+										for (var smoothIndex = 0; smoothIndex < Weapons.CurrentWeapon.SmoothValue; smoothIndex++)
+										{
+											if (!Mouse.IsKeyDown(Keys.LButton)) break;
+											if (Weapons.CurrentWeapon.ShouldRandomize)
+											{
+												Mouse.RelativeMove(
+													((int)Math.Round(Weapons.CurrentWeapon.RecoilTable[currentShotIndex][0] * Weapons.CurrentWeapon.MovementMultiplier, 0) + R.Next(Weapons.CurrentWeapon.RandomizeLowerBound, Weapons.CurrentWeapon.RandomizeUpperBound)) /
+													Weapons.CurrentWeapon.SmoothValue,
+													((int)Math.Round(Weapons.CurrentWeapon.RecoilTable[currentShotIndex][1] * Weapons.CurrentWeapon.MovementMultiplier, 0) + R.Next(Weapons.CurrentWeapon.RandomizeLowerBound, Weapons.CurrentWeapon.RandomizeUpperBound)) /
+													Weapons.CurrentWeapon.SmoothValue);
+												Thread.Sleep(Weapons.CurrentWeapon.ShotTiming / Weapons.CurrentWeapon.SmoothValue);
+											}
+											else
+											{
+												Mouse.RelativeMove((int)Math.Round(Weapons.CurrentWeapon.RecoilTable[currentShotIndex][0] * Weapons.CurrentWeapon.MovementMultiplier, 0) / Weapons.CurrentWeapon.SmoothValue,
+													(int)Math.Round(Weapons.CurrentWeapon.RecoilTable[currentShotIndex][1] * Weapons.CurrentWeapon.MovementMultiplier, 0) / Weapons.CurrentWeapon.SmoothValue);
+												Thread.Sleep(Weapons.CurrentWeapon.ShotTiming / Weapons.CurrentWeapon.SmoothValue);
+											}
+										}
+									}
+									else
+									{
+										if (Weapons.CurrentWeapon.ShouldRandomize)
+										{
+											Mouse.RelativeMove(
+												(int)Math.Round(Weapons.CurrentWeapon.RecoilTable[currentShotIndex][0] * Weapons.CurrentWeapon.MovementMultiplier, 0) + R.Next(Weapons.CurrentWeapon.RandomizeLowerBound, Weapons.CurrentWeapon.RandomizeUpperBound),
+												(int)Math.Round(Weapons.CurrentWeapon.RecoilTable[currentShotIndex][1] * Weapons.CurrentWeapon.MovementMultiplier, 0) + R.Next(Weapons.CurrentWeapon.RandomizeLowerBound, Weapons.CurrentWeapon.RandomizeUpperBound));
+											Thread.Sleep(Weapons.CurrentWeapon.ShotTiming);
+										}
+										else
+										{
+											Mouse.RelativeMove(
+												(int)Math.Round(Weapons.CurrentWeapon.RecoilTable[currentShotIndex][0] * Weapons.CurrentWeapon.MovementMultiplier, 0),
+												(int)Math.Round(Weapons.CurrentWeapon.RecoilTable[currentShotIndex][1] * Weapons.CurrentWeapon.MovementMultiplier, 0));
+											Thread.Sleep(Weapons.CurrentWeapon.ShotTiming);
+										}
+									}
+								}
+							break;
